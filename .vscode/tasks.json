@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build ads_util",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-std=c99",
+                "-Wall",
+                "-Wextra",
+                "-municode",
+                "-static",
+                "-o",
+                "${fileDirname}\\ads_util.exe",
+                "${file}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Сборка ads_util.exe с помощью MinGW-w64 GCC"
+        }
+    ]
+}
