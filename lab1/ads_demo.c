@@ -76,7 +76,11 @@ static int CmdWrite(LPCWSTR filePath, LPCWSTR streamName, LPCWSTR sourcePath)
 
     while (ok) {
         if (!ReadFile(hSrc, buf, CHUNK_SIZE, &read, NULL)) {
-            fwprintf(stderr, L"Read error: %lu\n", GetLastError());
+            DWORD err = GetLastError();
+            if (err == ERROR_BROKEN_PIPE) {
+                break;
+            }
+            fwprintf(stderr, L"Read error: %lu\n", err);
             ok = FALSE; break;
         }
         if (read == 0) break;
@@ -139,7 +143,11 @@ static int CmdRead(LPCWSTR filePath, LPCWSTR streamName, LPCWSTR outputPath)
         if (read == 0) break;
 
         if (!WriteFile(hDst, buf, read, &written, NULL) || written != read) {
-            fwprintf(stderr, L"Write error: %lu\n", GetLastError());
+            DWORD err = GetLastError();
+            if (err == ERROR_BROKEN_PIPE) {
+                break;
+            }
+            fwprintf(stderr, L"Write error: %lu\n", err);
             ok = FALSE; break;
         }
         total += written;
